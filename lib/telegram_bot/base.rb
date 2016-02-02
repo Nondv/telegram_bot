@@ -1,5 +1,6 @@
 require 'rest-client'
 require 'json'
+require 'time'
 
 module TelegramBot
   #
@@ -13,8 +14,47 @@ module TelegramBot
       @last_update_id = -1 # hmmm
     end
 
-    def get_me
+    def me
       send_api_request 'getMe'
+    end
+
+    #
+    # loads last updates.
+    # Note than after each #updates your @last_update_id will be changed so
+    # if you use it twice you won't get same result
+    #
+    def updates
+      updates = send_api_request 'getUpdates', offset: @last_update_id + 1
+      fail ResponseIsNotOk unless updates['ok']
+
+      @last_update_id = updates['result'].last['update_id'] unless updates['result'].empty?
+      updates['result'].map { |u| u['message'] }
+    end
+
+    #
+    # send text message to user.
+    #
+    # required params:
+    # * :chat - id of chat
+    # * :text - your message
+    #
+    # additional params:
+    # * :markdown - use telegram markdown
+    #
+    def send_message(params = {})
+      fail NoChatSpecified unless params[:chat]
+      fail NoMessageSpecified unless params[:text]
+
+      params[:chat_id] = params[:chat]
+      params.delete :chat
+
+      if params[:markdown]
+        params.delete :markdown
+        params[:parse_mode] = 'Markdown'
+      end
+
+      response = send_api_request('sendMessage', params)
+      response['ok']
     end
 
     private
@@ -22,8 +62,10 @@ module TelegramBot
     def send_api_request(method, params = {})
       fail NoTokenSpecified unless defined?(@token)
       @telegram_api_url = 'https://api.telegram.org' unless defined? @telegram_api_url
-      JSON.parse RestClient.get "#{@telegram_api_url}/#{@api_request_prefix}/#{method}",
-                                params: params
+      JSON.parse RestClient.post "#{@telegram_api_url}/#{@api_request_prefix}/#{method}",
+                                 params
+      # rescue RestClient::ExceptionWithResponse => err
+      # err.response.request
     end
   end
 end

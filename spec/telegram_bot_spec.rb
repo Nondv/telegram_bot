@@ -7,13 +7,12 @@ describe TelegramBot do
     token '188286713:AAE3kjZc74i3hw8nTCv4lLjY0nWxZOBWTwo'
   end
 
-
   it 'has a version number' do
     expect(TelegramBot::VERSION).not_to be nil
   end
 
   it 'can send getMe request' do
-    response = TestBot.get_me
+    response = TestBot.me
 
     expect(response['ok']).to be true
     expect(response['result']['first_name']).to eq 'test_bot'
