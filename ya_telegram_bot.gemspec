@@ -1,16 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'telegram_bot/version'
+require 'ya_telegram_bot/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'telegram_bot'
-  spec.version       = TelegramBot::VERSION
+  spec.name          = 'ya_telegram_bot'
+  spec.version       = YATelegramBot::VERSION
   spec.authors       = ['Dmitriy Non']
   spec.email         = ['non.dmitriy@gmail.com']
 
-  spec.summary       = 'module for using telegram bots'
-  spec.homepage      = ''
+  spec.summary       = 'Yet Another Telegram Bot'
+  spec.description   = 'Module for using Telegram Bot API'
+  spec.homepage      = 'https://github.com/Nondv/telegram_bot'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

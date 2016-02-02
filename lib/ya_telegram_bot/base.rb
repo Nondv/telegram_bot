@@ -2,7 +2,7 @@ require 'rest-client'
 require 'json'
 require 'time'
 
-module TelegramBot
+module YATelegramBot
   #
   # extend your class with this module to use API.
   # Or include it if you want to use in instances
