@@ -1,6 +1,7 @@
 require 'rest-client'
 require 'json'
 require 'time'
+Dir[File.expand_path('../telegram_api/*.rb', __FILE__)].each {|file| require file }
 
 module YATelegramBot
   #
@@ -8,6 +9,8 @@ module YATelegramBot
   # Or include it if you want to use in instances
   #
   module Base
+    include TelegramAPI
+
     def token(value)
       @token = value
       @api_request_prefix = "bot#{@token}"
@@ -28,7 +31,7 @@ module YATelegramBot
       fail ResponseIsNotOk unless updates['ok']
 
       @last_update_id = updates['result'].last['update_id'] unless updates['result'].empty?
-      updates['result'].map { |u| u['message'] }
+      updates['result'].map { |u| Message.new u['message'] }
     end
 
     #
