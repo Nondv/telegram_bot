@@ -2,6 +2,12 @@
 
 **IN DEV**
 
+## What's new **0.2.0**
+
+* Class `YATelegramBot::TelegramAPI::Message`.
+* `Base#Update` generates array of `Message`. See Usage.
+
+
 ## Usage
 
 ```ruby
@@ -23,11 +29,16 @@ updates.each do |message|
                 text: text,
                 markdown: true
 end
+
+Bot.updates.each { |message| message.reply text: 'Leave me alone!' }
+
 ```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/Nondv/telegram_bot. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/Nondv/telegram_bot.
+This project is intended to be a safe, welcoming space for collaboration,
+and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
