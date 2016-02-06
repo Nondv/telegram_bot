@@ -1,7 +1,9 @@
 require 'rest-client'
 require 'json'
 require 'time'
-Dir[File.expand_path('../telegram_api/*.rb', __FILE__)].each {|file| require file }
+
+require_relative 'exceptions'
+Dir[File.expand_path('../telegram_api/*.rb', __FILE__)].each { |file| require file }
 
 module YATelegramBot
   #
@@ -31,7 +33,7 @@ module YATelegramBot
       fail ResponseIsNotOk unless updates['ok']
 
       @last_update_id = updates['result'].last['update_id'] unless updates['result'].empty?
-      updates['result'].map { |u| Message.new u['message'] }
+      updates['result'].map { |u| Message.new(u['message'], self) }
     end
 
     #
@@ -42,25 +44,29 @@ module YATelegramBot
     # * :text - your message
     #
     # additional params:
-    # * :markdown - use telegram markdown
+    # * :markdown [Boolean] use telegram markdown
+    # * :reply_to [Integer] id of message you reply
     #
     def send_text(params = {})
-      fail NoChatSpecified unless params[:chat]
-      fail NoMessageSpecified unless params[:text]
-
-      params[:chat_id] = params[:chat]
-      params.delete :chat
-
-      if params[:markdown]
-        params.delete :markdown
-        params[:parse_mode] = 'Markdown'
-      end
-
-      response = send_api_request('sendMessage', params)
+      response = send_api_request 'sendMessage',
+                                  params_for_sending_text(params)
       response['ok']
     end
 
     private
+
+    def params_for_sending_text(params)
+      fail NoChatSpecified unless params[:chat]
+      fail NoMessageSpecified unless params[:text]
+
+      result = {}
+      result[:chat_id] = params[:chat]
+      result[:text] = params[:text]
+      result[:parse_mode] = 'Markdown' if params[:markdown]
+      result[:reply_to_message_id] = params[:reply_to].to_i if params[:reply_to]
+
+      result
+    end
 
     def send_api_request(method, params = {})
       fail NoTokenSpecified unless defined?(@token)
