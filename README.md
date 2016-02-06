@@ -19,9 +19,9 @@ updates.each do |message|
   user = message['from']['first_name']
   text = "Hello, *#{user}*"
 
-  Bot.send_message chat: chat_id,
-                   text: text,
-                   markdown: true
+  Bot.send_text chat: chat_id,
+                text: text,
+                markdown: true
 end
 ```
 

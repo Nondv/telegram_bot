@@ -1,12 +1,6 @@
 require 'spec_helper'
 
 describe YATelegramBot do
-  class TestBot
-    extend YATelegramBot::Base
-
-    token '188286713:AAE3kjZc74i3hw8nTCv4lLjY0nWxZOBWTwo'
-  end
-
   it 'has a version number' do
     expect(YATelegramBot::VERSION).not_to be nil
   end
@@ -17,5 +11,13 @@ describe YATelegramBot do
     expect(response['ok']).to be true
     expect(response['result']['first_name']).to eq 'test_bot'
     expect(response['result']['username']).to eq 'api_testing_bot'
+  end
+
+  it 'can get updates' do
+    updates = TestBot.updates
+
+    expect(updates.class).to be Array
+    # but we can have zero updates :(
+    updates.each { |m| expect(m.class).to be YATelegramBot::TelegramAPI::Message }
   end
 end
