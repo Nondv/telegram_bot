@@ -14,6 +14,12 @@ module YATelegramBot
         super(key.to_s)
       end
 
+
+      def method_missing(m, *args)
+        return self[m] if self[m] && args.empty?
+        super
+      end
+
       #
       # checking on message type
       #
