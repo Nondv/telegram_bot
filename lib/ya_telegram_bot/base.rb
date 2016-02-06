@@ -44,7 +44,7 @@ module YATelegramBot
     # additional params:
     # * :markdown - use telegram markdown
     #
-    def send_message(params = {})
+    def send_text(params = {})
       fail NoChatSpecified unless params[:chat]
       fail NoMessageSpecified unless params[:text]
 
