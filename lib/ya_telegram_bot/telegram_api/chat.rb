@@ -27,7 +27,7 @@ module YATelegramBot
       end
 
       #
-      # uses bot to send text to this user.
+      # uses bot to send text to this chat.
       #
       # @param params [Hash] params for Base#send_text. This method will only set :chat to self[:id]
       #
@@ -36,6 +36,18 @@ module YATelegramBot
 
         params[:chat] = id
         @bot.send_text params
+      end
+
+      #
+      # uses bot to send photo to this chat.
+      #
+      # @param params [Hash] params for Base#send_photo. This method will only set :chat to self[:id]
+      #
+      def send_photo(params = {})
+        fail InitWithoutBot unless @bot
+
+        params[:chat] = id
+        @bot.send_photo params
       end
     end
   end

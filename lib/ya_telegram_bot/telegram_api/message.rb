@@ -49,6 +49,8 @@ module YATelegramBot
       # * :text [String]
       # * :as_plain_message [Boolean] default: true. If it's true, method won't set :reply_to parameter
       #
+      # TODO: what about files?
+      #
       # @example message.reply(text: 'Hi, *friend*!', markdown: true)
       #
       def reply(params = {})

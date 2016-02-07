@@ -53,6 +53,24 @@ module YATelegramBot
       response['ok'] && Message.new(response['result'], self)
     end
 
+    #
+    # send photo message to user.
+    #
+    # required params:
+    # * :chat [Fixnum] id of chat
+    # * :file [File] your photo
+    #
+    # additional params:
+    # * :caption [String] caption for your photo
+    # * :reply_to [Fixnum] id of message you reply
+    #
+    def send_photo(params = {})
+      response = send_api_request 'sendPhoto',
+                                  params_for_sending_photo(params)
+
+      response['ok'] && Message.new(response['result'], self)
+    end
+
     private
 
     def params_for_sending_text(params)
@@ -68,8 +86,22 @@ module YATelegramBot
       result
     end
 
+    def params_for_sending_photo(params)
+      fail NoChatSpecified unless params[:chat]
+      fail NoFileSpecified unless params[:file] && params[:file].is_a?(File)
+
+      result = { chat_id: params[:chat],
+                 photo: params[:file] }
+
+      result[:caption] = params[:caption] if params[:caption]
+      result[:reply_to_message_id] = params[:reply_to].to_i if params[:reply_to]
+
+      result
+    end
+
     def send_api_request(method, params = {})
       fail NoTokenSpecified unless defined?(@token)
+
       @telegram_api_url = 'https://api.telegram.org' unless defined? @telegram_api_url
       JSON.parse RestClient.post "#{@telegram_api_url}/#{@api_request_prefix}/#{method}",
                                  params
