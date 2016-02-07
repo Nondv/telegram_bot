@@ -46,7 +46,7 @@ module YATelegramBot
       #
       # params values:
       # * :text [String]
-      # * :as_plain_message [Boolean] default: true. If it's set, method won't set :reply_to parameter
+      # * :as_plain_message [Boolean] default: true. If it's true, method won't set :reply_to parameter
       #
       # @example message.reply(text: 'Hi, *friend*!', markdown: true)
       #

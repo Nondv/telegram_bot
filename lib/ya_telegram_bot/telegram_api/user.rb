@@ -23,6 +23,18 @@ module YATelegramBot
         return self[m] if self[m] && args.empty?
         super
       end
+
+      #
+      # uses bot to send text to this user.
+      #
+      # @param params [Hash] params for Base#send_text. This method will only set :chat to self[:id]
+      #
+      def send_text(params = {})
+        fail InitWithoutBot unless @bot
+
+        params[:chat] = id
+        @bot.send_text params
+      end
     end
   end
 end
