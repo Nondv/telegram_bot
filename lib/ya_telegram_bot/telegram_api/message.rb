@@ -1,4 +1,5 @@
 require 'time'
+require_relative 'user'
 
 module YATelegramBot
   module TelegramAPI
@@ -45,7 +46,7 @@ module YATelegramBot
       #
       # params values:
       # * :text [String]
-      # * :as_plain_message [Boolean] default: true. If it's set, method won't set :reply_to parameter
+      # * :as_plain_message [Boolean] default: true. If it's true, method won't set :reply_to parameter
       #
       # @example message.reply(text: 'Hi, *friend*!', markdown: true)
       #
@@ -71,7 +72,7 @@ module YATelegramBot
         new_hash = {}
         new_hash[:id] = hash['message_id'].to_i
         new_hash[:date] = Time.at hash['date'].to_i
-        new_hash[:from] = hash['from'] # TODO: class User
+        new_hash[:from] = User.new(hash['from'], @bot)
         new_hash[:chat] = hash['chat'] # TODO: class Chat
 
         type = TYPES.find { |t| hash[t.to_s] }

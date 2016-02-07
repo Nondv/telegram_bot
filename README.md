@@ -19,6 +19,8 @@ class Bot
   token YOUR_TOKEN
 end
 
+# getting LAST updates as array of YATelegramBot:TelegramAPI::Message
+# "LAST" means that #updates method every time will return fresh updates (so you will never get same updates inside your process)
 updates = Bot.updates
 updates.each do |message|
   chat_id = message['chat']['id']
@@ -30,7 +32,14 @@ updates.each do |message|
                 markdown: true
 end
 
+# reply to message
 Bot.updates.each { |message| message.reply text: 'Leave me alone!' }
+
+# YATelegramBot::TelegramAPI::User
+user = Bot.updates[0].from
+user.send_text text: '*hey hey!*',
+               markdown: true
+
 
 ```
 
