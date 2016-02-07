@@ -2,11 +2,10 @@
 
 **IN DEV**
 
-## What's new **0.2.0**
+## What's new **0.3.0**
 
-* Class `YATelegramBot::TelegramAPI::Message`.
-* `Base#Update` generates array of `Message`. See Usage.
-
+* Class `YATelegramBot::TelegramAPI::User`.
+* Class `YATelegramBot::TelegramAPI::Chat`.
 
 ## Usage
 
@@ -19,6 +18,8 @@ class Bot
   token YOUR_TOKEN
 end
 
+# getting LAST updates as array of YATelegramBot:TelegramAPI::Message
+# "LAST" means that #updates method every time will return fresh updates (so you will never get same updates inside your process)
 updates = Bot.updates
 updates.each do |message|
   chat_id = message['chat']['id']
@@ -30,7 +31,17 @@ updates.each do |message|
                 markdown: true
 end
 
+# reply to message
 Bot.updates.each { |message| message.reply text: 'Leave me alone!' }
+
+# YATelegramBot::TelegramAPI::User
+user = Bot.updates[0].from
+user.send_text text: '*hey hey!*',
+               markdown: true
+
+#YATelegramBot::TelegramAPI::Chat
+chat = Bot.updates[0].chat
+chat.send_text text: "Hi, #{chat.type == :private ? 'dude' : 'all'}!"
 
 ```
 

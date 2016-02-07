@@ -1,4 +1,6 @@
 require 'time'
+require_relative 'user'
+require_relative 'chat'
 
 module YATelegramBot
   module TelegramAPI
@@ -45,7 +47,7 @@ module YATelegramBot
       #
       # params values:
       # * :text [String]
-      # * :as_plain_message [Boolean] default: true. If it's set, method won't set :reply_to parameter
+      # * :as_plain_message [Boolean] default: true. If it's true, method won't set :reply_to parameter
       #
       # @example message.reply(text: 'Hi, *friend*!', markdown: true)
       #
@@ -68,11 +70,10 @@ module YATelegramBot
       # @return [Hash]
       #
       def hash_for_merging(hash)
-        new_hash = {}
-        new_hash[:id] = hash['message_id'].to_i
-        new_hash[:date] = Time.at hash['date'].to_i
-        new_hash[:from] = hash['from'] # TODO: class User
-        new_hash[:chat] = hash['chat'] # TODO: class Chat
+        new_hash = { id: hash['message_id'].to_i,
+                     date: Time.at(hash['date'].to_i),
+                     from: User.new(hash['from'], @bot),
+                     chat: Chat.new(hash['chat'], @bot) }
 
         type = TYPES.find { |t| hash[t.to_s] }
         new_hash[type] = hash[type.to_s] # TODO: fail if type not found

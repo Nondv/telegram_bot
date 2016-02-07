@@ -50,7 +50,7 @@ module YATelegramBot
     def send_text(params = {})
       response = send_api_request 'sendMessage',
                                   params_for_sending_text(params)
-      response['ok']
+      response['ok'] && Message.new(response['result'], self)
     end
 
     private
