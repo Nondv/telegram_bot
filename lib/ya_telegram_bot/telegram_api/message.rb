@@ -1,5 +1,6 @@
 require 'time'
 require_relative 'user'
+require_relative 'chat'
 
 module YATelegramBot
   module TelegramAPI
@@ -73,7 +74,7 @@ module YATelegramBot
         new_hash[:id] = hash['message_id'].to_i
         new_hash[:date] = Time.at hash['date'].to_i
         new_hash[:from] = User.new(hash['from'], @bot)
-        new_hash[:chat] = hash['chat'] # TODO: class Chat
+        new_hash[:chat] = Chat.new(hash['chat'], @bot)
 
         type = TYPES.find { |t| hash[t.to_s] }
         new_hash[type] = hash[type.to_s] # TODO: fail if type not found

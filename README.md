@@ -40,6 +40,9 @@ user = Bot.updates[0].from
 user.send_text text: '*hey hey!*',
                markdown: true
 
+#YATelegramBot::TelegramAPI::Chat
+chat = Bot.updates[0].chat
+chat.send_text text: "Hi, #{chat.type == :private ? 'dude' : 'all'}!"
 
 ```
 
