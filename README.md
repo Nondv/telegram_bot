@@ -2,11 +2,10 @@
 
 **IN DEV**
 
-## What's new **0.2.0**
+## What's new **0.3.0**
 
-* Class `YATelegramBot::TelegramAPI::Message`.
-* `Base#Update` generates array of `Message`. See Usage.
-
+* Class `YATelegramBot::TelegramAPI::User`.
+* Class `YATelegramBot::TelegramAPI::Chat`.
 
 ## Usage
 
