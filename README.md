@@ -2,10 +2,9 @@
 
 **IN DEV**
 
-## What's new **0.3.0**
+## What's new **0.4.0**
 
-* Class `YATelegramBot::TelegramAPI::User`.
-* Class `YATelegramBot::TelegramAPI::Chat`.
+* `#send_photo` method on `Base`, `User`, `Chat`
 
 ## Usage
 
@@ -42,6 +41,9 @@ user.send_text text: '*hey hey!*',
 #YATelegramBot::TelegramAPI::Chat
 chat = Bot.updates[0].chat
 chat.send_text text: "Hi, #{chat.type == :private ? 'dude' : 'all'}!"
+
+# send photo
+user.send_photo file: File.new('my_awesome_photo.png'), caption: 'awesome photo'
 
 ```
 
